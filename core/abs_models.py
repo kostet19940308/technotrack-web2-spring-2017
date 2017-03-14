@@ -21,3 +21,9 @@ class UpdatedAt(models.Model):
 
     class Meta:
         abstract = True;
+
+class Likeable(models.Model):
+
+
+    class Meta:
+        abstract = True

@@ -2,12 +2,16 @@ from __future__ import unicode_literals
 
 from django.db import models
 
-from core.abs_models import Authored, CreatedAt, UpdatedAt
+from core.abs_models import Authored, CreatedAt, UpdatedAt, Likeable
 from core.models import User
+from feed.abs_models import Feedable
 
-class FriendShip(Authored, CreatedAt, UpdatedAt):
-    #recipient = models.ForeignKey(User)
+class FriendShip(Authored, CreatedAt, UpdatedAt, Feedable, Likeable):
+    recipient = models.ForeignKey(User, related_name='new_friend')
     approved = models.BooleanField()
+
+    def feed_author(self):
+        return self.author
 
 
 class Friends(Authored):
