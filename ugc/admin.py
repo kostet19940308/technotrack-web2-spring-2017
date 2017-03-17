@@ -1,7 +1,8 @@
 from django.contrib import admin
 from django.contrib.contenttypes.admin import GenericStackedInline
 
-from ugc.models import Post, Like
+from ugc.models import Post
+from like.models import Like
 
 
 class LikeInline(GenericStackedInline):
@@ -24,6 +25,3 @@ class PostAdmin(admin.ModelAdmin):
 admin.site.register(Post, PostAdmin)
 
 
-@admin.register(Like)
-class LikeAdmin(admin.ModelAdmin):
-    list_display = ('author', 'target_object', 'updated_at')

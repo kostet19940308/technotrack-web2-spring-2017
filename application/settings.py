@@ -46,7 +46,8 @@ INSTALLED_APPS = [
     'ugc.apps.UgcConfig',
     'feed.apps.FeedConfig',
     'chat.apps.ChatConfig',
-    'friendship.apps.FriendshipConfig'
+    'friendship.apps.FriendshipConfig',
+    'like.apps.LikeConfig'
 ]
 
 MIDDLEWARE = [
