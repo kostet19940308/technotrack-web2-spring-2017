@@ -1,12 +1,12 @@
 from abc import abstractmethod
 
 from django.db import models
+from core.abs_models import Authored
 
-class Feedable(models.Model):
+class Feedable(Authored):
 
-    @abstractmethod
     def feed_author(self):
-        pass
+        return self.author
 
     class Meta:
         abstract = True

@@ -7,14 +7,12 @@ from core.models import User
 from feed.abs_models import Feedable
 from like.abs_models import Likeable
 
-class FriendShip(Authored, CreatedAt, UpdatedAt, Feedable, Likeable):
+class FriendShip(Authored, CreatedAt, UpdatedAt):
     recipient = models.ForeignKey(User, related_name='new_friend')
     approved = models.BooleanField()
 
-    def feed_author(self):
-        return self.author
 
 
-class Friends(Authored):
+class Friends(Feedable, Likeable):
     friend_ship = models.ForeignKey(FriendShip)
     friend = models.ForeignKey(User, related_name="friend")

@@ -8,11 +8,8 @@ from like.abs_models import Likeable
 
 
 
-class Post(Authored, CreatedAt, UpdatedAt, Feedable, Likeable):
+class Post(CreatedAt, UpdatedAt, Feedable, Likeable):
     title = models.CharField(max_length=255)
     text = models.TextField(max_length=2048)
-
-    def feed_author(self):
-        return self.author
 
 
