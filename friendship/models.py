@@ -16,3 +16,6 @@ class FriendShip(Authored, CreatedAt, UpdatedAt):
 class Friends(Feedable, Likeable):
     friend_ship = models.ForeignKey(FriendShip)
     friend = models.ForeignKey(User, related_name="friend")
+
+    def get_text_of_feed(self):
+        return self.author.username + ' becomes friend of ' + self.friend.username

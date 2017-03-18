@@ -8,7 +8,7 @@ from core.models import User
 
 class Chat(Authored, CreatedAt):
     name = models.CharField(max_length=255)
-    members = models.ManyToManyField(User, related_name="charts")
+    members = models.ManyToManyField(User, related_name="chat")
 
 
 class Message(Authored, CreatedAt):

@@ -10,7 +10,8 @@ logger = logging.getLogger("feed_signals")
 def feadable_element_post_save(sender, instance, created, **kwargs):
     assert isinstance(instance, Feedable)
     if created:
-        Feed.objects.create(content_object=instance, author=instance.feed_author())
+        Feed.objects.create(content_object=instance, author=instance.feed_author(),
+                            text = instance.get_text_of_feed())
 
 
 for subclass in Feedable.__subclasses__():

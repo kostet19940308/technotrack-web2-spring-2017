@@ -12,4 +12,7 @@ class Post(CreatedAt, UpdatedAt, Feedable, Likeable):
     title = models.CharField(max_length=255)
     text = models.TextField(max_length=2048)
 
+    def get_text_of_feed(self):
+        return self.author.username + ' make new post: ' + self.title
+
 
