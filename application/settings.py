@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     'feed.apps.FeedConfig',
     'chat.apps.ChatConfig',
     'friendship.apps.FriendshipConfig',
-    'like.apps.LikeConfig'
+    'like.apps.LikeConfig',
+    'award.apps.AwardConfig'
 ]
 
 MIDDLEWARE = [

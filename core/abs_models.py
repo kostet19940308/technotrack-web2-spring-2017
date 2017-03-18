@@ -22,3 +22,10 @@ class UpdatedAt(models.Model):
     class Meta:
         abstract = True;
 
+
+class Titled(models.Model):
+    title = models.CharField(max_length=255)
+
+    class Meta:
+        abstract = True;
+
