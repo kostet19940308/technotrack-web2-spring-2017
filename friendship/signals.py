@@ -24,5 +24,16 @@ def award_for_friends(instance, **kwargs):
             text = "{0} now have {1} friends".format(instance.author.username, num)
         )
 
+@receiver(signal=post_save, sender=FriendShip)
+def award_for_friendship(instance, **kwargs):
+    num1 = FriendShip.objects.filter(author=instance.author).count()
+    num2 = Friends.objects.filter(author=instance.author).count()
+    if (num1 == 3) and (num2 == 0):
+        Award.objects.create(
+            author=instance.author,
+            title="Titan of loneliness",
+            text="You can find friends"
+        )
+
 post_init.connect(approve_friendship_post_init, sender=FriendShip, dispatch_uid="friendship_approve_friendship_pre")
 post_save.connect(approve_friendship_post, sender=FriendShip, dispatch_uid="friendship_approve_friendship_post")
