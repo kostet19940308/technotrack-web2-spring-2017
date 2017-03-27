@@ -9,7 +9,7 @@ class LikeInline(GenericStackedInline):
     ct_field = 'target_type'
     ct_fk_field = 'target_id'
     model = Like
-    max_num = 0
+    max_num = 1
 
 
 class PostAdmin(admin.ModelAdmin):
