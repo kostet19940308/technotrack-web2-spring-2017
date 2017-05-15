@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.admin import StackedInline
-from chat.models import Chat, Message
+from chat.models import Chat, Message, ChatMembership
 
 class MessageInLine(StackedInline):
     model = Message
@@ -16,3 +16,8 @@ class ChatAdmin(admin.ModelAdmin):
 @admin.register(Message)
 class MessageAdmin(admin.ModelAdmin):
     list_display = ('author', 'chat', 'title')
+
+
+@admin.register(ChatMembership)
+class ChatMembershipAdmin(admin.ModelAdmin):
+    pass

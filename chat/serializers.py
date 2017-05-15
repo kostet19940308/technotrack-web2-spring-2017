@@ -9,7 +9,7 @@ class ChatSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Chat
-        fields = ('author', 'name', 'members')
+        fields = ('id','author', 'name', 'members')
 
 
 

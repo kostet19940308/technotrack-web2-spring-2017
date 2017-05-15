@@ -8,10 +8,27 @@ from core.models import User
 
 class Chat(Authored, CreatedAt):
     name = models.CharField(max_length=255)
-    members = models.ManyToManyField(User, related_name="chat_members")
+    members = models.ManyToManyField(
+        User,
+        related_name="chats",
+        through="ChatMembership",
+        through_fields=('chat', 'user'),
+        verbose_name="chat members list"
+    )
 
 
 class Message(Authored, CreatedAt,Titled):
     chat = models.ForeignKey(Chat)
     text = models.TextField(max_length=2048)
 
+class ChatMembership(CreatedAt):
+    chat = models.ForeignKey(Chat)
+    user = models.ForeignKey(User)
+    inviter = models.ForeignKey(
+        User,
+        related_name="+",
+        verbose_name="chat inviter"
+    )
+
+    class Meta:
+        unique_together = (('user', 'chat'), )
