@@ -1,16 +1,23 @@
 from django.contrib import admin
-from django.contrib.admin import StackedInline
+from django.contrib.admin import StackedInline, TabularInline
 from chat.models import Chat, Message, ChatMembership
 
-class MessageInLine(StackedInline):
+class MessageInLine(TabularInline):
     model = Message
     ordering = ("-created_at", )
     extra = 1
+    fields = ('author', 'title', 'text')
+
+class ChatMembershipInLine(TabularInline):
+    model = ChatMembership
+    ordering = ("-created_at", )
+    extra = 1
+    fields = ('user', 'inviter')
 
 @admin.register(Chat)
 class ChatAdmin(admin.ModelAdmin):
     list_display = ('name', 'author')
-    inlines = [MessageInLine,]
+    inlines = [MessageInLine, ChatMembershipInLine,]
 
 
 @admin.register(Message)

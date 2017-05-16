@@ -19,7 +19,7 @@ class PostAdmin(admin.ModelAdmin):
     ]
 
     def short_text(self, post):
-        return post.text[:100]
+        return post.text[:30]
 
 
 admin.site.register(Post, PostAdmin)

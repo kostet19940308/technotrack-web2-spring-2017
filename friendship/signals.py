@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
 from .models import Friends, FriendShip
 from award.models import friendship, Award
-from django.db.models.signals import post_init, post_save
+from django.db.models.signals import post_init, post_save, post_delete
 from django.dispatch import receiver
 
 
@@ -34,6 +34,14 @@ def award_for_friendship(instance, **kwargs):
             title="Titan of loneliness",
             text="You can find friends"
         )
+
+@receiver(post_delete, sender=FriendShip)
+def post_delete_friend(instance, *args, **kwargs):
+    try:
+        Friends.objects.get(author=instance.author, friend=instance.recipient).delete()
+        Friends.objects.get(author=instance.recipient, friend=instance.author).delete()
+    except:
+        pass
 
 post_init.connect(approve_friendship_post_init, sender=FriendShip, dispatch_uid="friendship_approve_friendship_pre")
 post_save.connect(approve_friendship_post, sender=FriendShip, dispatch_uid="friendship_approve_friendship_post")

@@ -10,13 +10,21 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
 
 class IsFriends(permissions.IsAuthenticated):
     def has_object_permission(self, request, view, obj):
-        if request.query_params.get('author'):
-            friend_id = request.query_params.get('author')
-        return friend_id == request.user.id or Friends.objects.filter(Q(author=request.user.id) &
-                                                                    Q(friend__id = friend_id)).exists()
+        # friend_id = int(view.kwargs['user_id'])
+        # q = Friends.objects.filter(Q(author_id=request.user.id) & Q(friend_id=friend_id))
+        # return friend_id == request.user.id or q.exists()
+        friend_id = obj.author.id
+        #print friend_id
+        if friend_id is not None:
+            #friend_id = request.query_params.get('author')
+            q = Friends.objects.filter(Q(author_id=request.user.id) & Q(friend_id=friend_id))
+            #print q
+            return friend_id == request.user.id or q.exists()
+        return False
 
     def has_permission(self, request, view):
         if request.query_params.get('author'):
-            user_id = request.query_params.get('author')
-        return user_id == request.user.id or Friends.objects.filter(Q(author=request.user.id) &
-                                                                    Q(friend__id = user_id)).exists()
+            friend_id = int(request.query_params.get('author'))
+            q = Friends.objects.filter(Q(author_id=request.user.id) & Q(friend_id=friend_id))
+            return friend_id == request.user.id or q.exists()
+        return True
