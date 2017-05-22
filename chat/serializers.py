@@ -1,11 +1,11 @@
 from .models  import Chat, Message
 from rest_framework import serializers
-from core.serializers import UserSerializer
+from core.serializers import UserAuthorSerializer
 
 class ChatSerializer(serializers.HyperlinkedModelSerializer):
 
-    members = UserSerializer(many=True)
-    author = UserSerializer(read_only=True)
+    members = UserAuthorSerializer(many=True)
+    author = UserAuthorSerializer(read_only=True)
 
     class Meta:
         model = Chat
@@ -14,7 +14,7 @@ class ChatSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class MessageSerializer(serializers.HyperlinkedModelSerializer):
-    author = UserSerializer(read_only=True)
+    author = UserAuthorSerializer(read_only=True)
     chat = ChatSerializer(read_only=True)
     class Meta:
         model = Message
