@@ -28,7 +28,8 @@ def award_for_friends(instance, **kwargs):
 def award_for_friendship(instance, **kwargs):
     num1 = FriendShip.objects.filter(author=instance.author).count()
     num2 = Friends.objects.filter(author=instance.author).count()
-    if (num1 == 3) and (num2 == 0):
+    if (num1 == 3) and (num2 == 0) and \
+            Award.objects.filter(title="Titan of loneliness").none():
         Award.objects.create(
             author=instance.author,
             title="Titan of loneliness",

@@ -8,6 +8,18 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
             return True
         return obj.author == request.user or request.user.is_staff
 
+class ReadOnly(permissions.BasePermission):
+    def has_object_permission(self, request, view, obj):
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        return False
+
+    def has_permission(self, request, view):
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        return False
+
+
 class IsFriends(permissions.IsAuthenticated):
     def has_object_permission(self, request, view, obj):
         # friend_id = int(view.kwargs['user_id'])
