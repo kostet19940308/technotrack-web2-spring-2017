@@ -1,8 +1,8 @@
 from django.shortcuts import render
 
-from .models  import Chat, Message
+from .models  import Chat, Message, ChatMembership
 from rest_framework import viewsets, permissions
-from .serializers import ChatSerializer, MessageSerializer
+from .serializers import ChatSerializer, MessageSerializer, ChatMembershipWriteOnlySerializer, ChatMembershipReadOnlySerializer
 from .permissions import IsMember
 
 class ChatViewSet(viewsets.ModelViewSet):
@@ -23,10 +23,27 @@ class MessageViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.IsAuthenticated, IsMember)
 
     def perform_create(self, serializer):
-        serializer.save(author=self.request.user)
+        serializer.save(chat_id=self.kwargs["chat_id"], author=self.request.user)
 
     def get_queryset(self):
-        queryset = super(MessageViewSet, self).get_queryset()
-        if 'chat' in self.request.query_params:
-            queryset = queryset.filter(chat=self.request.query_params['chat'])
-        return queryset
+        #queryset = super(MessageViewSet, self).get_queryset()
+        return Message.objects.filter(chat_id=self.kwargs["chat_id"])
+
+class ChatMembersViewSet(viewsets.ModelViewSet):
+    queryset = ChatMembership.objects.all()
+    #serializer_class = ChatMembershipSerializer
+    permission_classes = (permissions.IsAuthenticated, IsMember)
+
+
+    def get_serializer_class(self):
+        if self.action == 'create':
+            return ChatMembershipWriteOnlySerializer
+        return ChatMembershipReadOnlySerializer
+
+    def perform_create(self, serializer):
+        #print serializer.user
+        serializer.save(chat_id=self.kwargs["chat_id"], inviter=self.request.user)
+
+    def get_queryset(self):
+        #q = super(ChatMembersViewSet, self).get_queryset()
+        return ChatMembership.objects.filter(chat_id=self.kwargs["chat_id"])

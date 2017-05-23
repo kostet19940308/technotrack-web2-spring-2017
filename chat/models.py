@@ -17,9 +17,10 @@ class Chat(Authored, CreatedAt):
     )
 
 
-class Message(Authored, CreatedAt,Titled):
-    chat = models.ForeignKey(Chat)
+class Message(Authored, CreatedAt):
+    chat = models.ForeignKey(Chat, related_name="messages")
     text = models.TextField(max_length=2048)
+    title = models.CharField(max_length=255, blank=True)
 
 class ChatMembership(CreatedAt):
     chat = models.ForeignKey(Chat)
