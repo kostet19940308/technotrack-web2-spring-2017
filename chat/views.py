@@ -4,11 +4,12 @@ from .models  import Chat, Message, ChatMembership
 from rest_framework import viewsets, permissions
 from .serializers import ChatSerializer, MessageSerializer, ChatMembershipWriteOnlySerializer, ChatMembershipReadOnlySerializer
 from .permissions import IsMember
+from api.pagination import ResultsSetPagination
 
 class ChatViewSet(viewsets.ModelViewSet):
     queryset = Chat.objects.all()
     serializer_class = ChatSerializer
-    permission_classes = (permissions.IsAuthenticated, IsMember)
+    permission_classes = (permissions.IsAuthenticated,)
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
@@ -21,6 +22,7 @@ class MessageViewSet(viewsets.ModelViewSet):
     queryset = Message.objects.all()
     serializer_class = MessageSerializer
     permission_classes = (permissions.IsAuthenticated, IsMember)
+    pagination_class = ResultsSetPagination
 
     def perform_create(self, serializer):
         serializer.save(chat_id=self.kwargs["chat_id"], author=self.request.user)

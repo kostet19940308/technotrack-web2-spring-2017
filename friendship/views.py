@@ -5,7 +5,7 @@ from .models import FriendShip, Friends
 from django.db.models import Q
 from core.serializers import UserAuthorSerializer
 from .serializers import FriendShiptSerializer, FriendsSerializer
-from .permissions import IsInviterOrRecipient
+from .permissions import IsInviterOrRecipient, IsFriends
 from api.permissions import ReadOnly
 
 class FriendShipViewSet(viewsets.ModelViewSet):
@@ -39,18 +39,10 @@ class FriendShipViewSet(viewsets.ModelViewSet):
 class FriendsViewSet(viewsets.ModelViewSet):
     queryset = Friends.objects.all()
     serializer_class = FriendsSerializer
-    permission_classes = (permissions.IsAuthenticated, ReadOnly)
+    permission_classes = (permissions.IsAuthenticated, ReadOnly, IsFriends)
 
     def get_queryset(self):
         q = self.queryset
-        username = self.request.query_params.get('username')
-        pk = None
-        if 'pk' in self.kwargs:
-            pk = self.kwargs['pk']
-            q = q.filter(pk=pk)
-        elif username:
-            q = q.filter(username=username)
-        else:
-            q = q.filter(author=self.request.user)
-
-        return q
+        if 'user' in self.request.query_params:
+            return q.filter(author=self.request.query_params['user'])
+        return q.filter(author=self.request.user)

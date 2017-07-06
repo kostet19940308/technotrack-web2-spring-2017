@@ -12,15 +12,15 @@ class ReadOnly(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         if request.method in permissions.SAFE_METHODS:
             return True
-        return False
+        return request.user.is_staff
 
     def has_permission(self, request, view):
         if request.method in permissions.SAFE_METHODS:
             return True
-        return False
+        return request.user.is_staff
 
 
-class IsFriends(permissions.IsAuthenticated):
+class IsContentOfFriends(permissions.IsAuthenticated):
     def has_object_permission(self, request, view, obj):
         # friend_id = int(view.kwargs['user_id'])
         # q = Friends.objects.filter(Q(author_id=request.user.id) & Q(friend_id=friend_id))

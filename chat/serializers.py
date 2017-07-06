@@ -5,7 +5,7 @@ from django.db.models import Q
 
 class ChatSerializer(serializers.HyperlinkedModelSerializer):
 
-    members = UserAuthorSerializer(many=True)
+    members = UserAuthorSerializer(many=True, read_only=True)
     author = UserAuthorSerializer(read_only=True)
     last_message = serializers.SerializerMethodField('get_message')
 
@@ -14,11 +14,14 @@ class ChatSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('id','author', 'name', 'members', 'last_message')
 
     def get_message(self, obj):
-        last_message = obj.messages.all().order_by('-created_at')[0]
-        return {
-            'author': last_message.author.username,
-            'text': last_message.text,
-        }
+        if obj.messages.all().count():
+            last_message = obj.messages.all().order_by('-created_at')[0]
+            return {
+                'author': last_message.author.username,
+                'text': last_message.text,
+            }
+        else:
+            return ''
 
 
 class ChatAuthorSerializer(serializers.ModelSerializer):
@@ -32,7 +35,7 @@ class ChatAuthorSerializer(serializers.ModelSerializer):
 
 class MessageSerializer(serializers.HyperlinkedModelSerializer):
     author = UserAuthorSerializer(read_only=True)
-    chat = ChatAuthorSerializer()
+    chat = ChatAuthorSerializer(read_only=True)
     class Meta:
         model = Message
         fields = ('author', 'title', 'text', 'chat', 'created_at')
