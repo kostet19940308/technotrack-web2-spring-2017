@@ -7,7 +7,7 @@ from ugc.models import Post
 
 @receiver(signals.post_save, sender = Like)
 def feed_and_award_for_like(instance, created, **kwargs):
-    target = instance.target
+    target = instance.target_object
     if created:
         num = target.likes_count()
         if num in like_post.keys():
