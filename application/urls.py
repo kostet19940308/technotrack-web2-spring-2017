@@ -17,10 +17,16 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from django.conf import settings
 from api.routers import router
+from core.views import home
+from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^api/v1/', include(router.urls, namespace="api"))
+    url(r'^api/v1/', include(router.urls, namespace="api")),
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    url(r'^social/', include('social_django.urls', namespace='social')),
+    url(r'^accounts/', include('core.urls', namespace='core')),
+    url(r'^$', login_required(home), name='home'),
 ]
 
 if settings.DEBUG:

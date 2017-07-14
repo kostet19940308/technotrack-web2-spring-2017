@@ -6,7 +6,7 @@ from friendship.models import Friends
 from friendship.serializers import FriendsSerializer
 from award.models import Award
 from award.serializers import AwardSerializer
-from core.serializers import UserSerializer
+from core.serializers import UserAuthorSerializer
 from django.contrib.contenttypes.models import ContentType
 from rest_framework.reverse import reverse
 
@@ -30,12 +30,12 @@ class TaggedObjectRelatedField(serializers.RelatedField):
 
 
 class FeedSerializer(serializers.HyperlinkedModelSerializer):
-    content_object = TaggedObjectRelatedField(read_only=True)
+    #content_object = TaggedObjectRelatedField(read_only=True)
 
     created_at = serializers.DateTimeField(read_only=True, format='%X %d %b %Y')
-    author = UserSerializer()
+    author = UserAuthorSerializer()
 
     class Meta:
         model = Feed
-        fields = ('id', 'author', 'text', 'content_object', 'created_at')
+        fields = ('id', 'author', 'text', 'created_at')
         depth = 0

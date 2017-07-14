@@ -9,7 +9,7 @@ from api.permissions import ReadOnly, IsContentOfFriends
 class FeedViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Feed.objects.all()
     serializer_class = FeedSerializer
-    pagination_class = ResultsSetPagination
+    #pagination_class = ResultsSetPagination
     permission_classes = (permissions.IsAuthenticated, ReadOnly, IsContentOfFriends)
 
     def get_queryset(self):
