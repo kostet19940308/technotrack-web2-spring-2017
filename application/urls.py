@@ -24,6 +24,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^api/v1/', include(router.urls, namespace="api")),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    url(r'^search/', include('haystack.urls', app_name='search', namespace='search')),
     url(r'^social/', include('social_django.urls', namespace='social')),
     url(r'^accounts/', include('core.urls', namespace='core')),
     url(r'^$', login_required(home), name='home'),

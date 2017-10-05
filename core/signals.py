@@ -9,5 +9,5 @@ from .helpers import send_mail
 def post_save_user_confirmation(instance, created=False, *args, **kwargs):
     if created:
         print 'Hello1'
-        send_activation_email.apply_async([instance.id, ], countdown=5)
+        send_activation_email.apply_async([instance.id, ], countdown=10)
         #send_mail('so@admin.ru', instance)

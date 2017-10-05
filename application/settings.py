@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'templated_email',
     'core.apps.CoreConfig',
     'ugc.apps.UgcConfig',
+    'haystack',
     'feed.apps.FeedConfig',
     'chat.apps.ChatConfig',
     'friendship.apps.FriendshipConfig',
@@ -206,3 +207,10 @@ CELERY_BROKER_URL = 'redis://localhost:6379/0'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
 CELERY_TASK_SERIALIZER = 'json'
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        'PATH': os.path.join(os.path.dirname(__file__), 'whoosh_index'),
+    },
+}

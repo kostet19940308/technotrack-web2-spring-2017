@@ -3,7 +3,7 @@ from django.conf import settings
 from templated_email import send_templated_mail, get_templated_mail, InlineImage
 
 
-def send_mail(from_email, user):
+def send_mail( user):
     recipient_list = [user.email, ]
     if settings.DEBUG:
         recipient_list = [admin[0] for admin in settings.ADMINS]
@@ -11,5 +11,5 @@ def send_mail(from_email, user):
     email = get_templated_mail('mail', {
         'image': InlineImage('avatar.jpg', open('./static/avatar.jpg', 'rb').read(), 'jpg'),
         'user': user,
-    }, from_email, recipient_list)
+    }, user.email, recipient_list)
     email.send()
